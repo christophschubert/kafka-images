@@ -77,6 +77,7 @@ enabled=1 " > /etc/yum.repos.d/confluent.repo \
     && echo "===> clean up ..."  \
     && yum clean all \
     && rm -rf /tmp/* /etc/yum.repos.d/confluent.repo \
+    && rm -rf /usr/share/java/confluent-security/schema-registry /usr/share/java/confluent-security/ksql /usr/share/java/confluent-security/kafka-rest /usr/share/java/confluent-security/connect \
     && echo "===> Setting up ${COMPONENT} dirs" \
     && mkdir -p /var/lib/${COMPONENT}/data /etc/${COMPONENT}/secrets \
     && chown -R appuser:root /etc/kafka /var/log/kafka /var/log/confluent /var/lib/kafka /var/lib/zookeeper /etc/${COMPONENT}/secrets \

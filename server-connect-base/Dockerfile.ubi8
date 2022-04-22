@@ -73,10 +73,12 @@ enabled=1 " > /etc/yum.repos.d/confluent.repo \
     && echo "===> Cleaning up ..."  \
     && yum clean all \
     && rm -rf /tmp/* /etc/yum.repos.d/confluent.repo \
+    && rm -rf /etc/confluent-control-center /usr/bin/control-center-* /usr/share/doc/confluent-control-center /usr/share/java/confluent-control-center \
+    && rm -rf /etc/schema-registry /usr/bin/schema-registry* /usr/share/doc/kafka-serde-tools /usr/share/doc/schema-registry /usr/share/java/schema-registry \
     && echo "===> Setting up ${COMPONENT} dirs ..." \
     && mkdir -p /etc/${COMPONENT} /etc/${COMPONENT}/secrets /etc/${COMPONENT}/jars /usr/logs /usr/share/confluent-hub-components \
-    && chown appuser:root -R /etc/kafka /etc/${COMPONENT} /etc/schema-registry /usr/logs /usr/share/confluent-hub-components \
-    && chmod -R ug+w /etc/kafka /etc/${COMPONENT} /etc/${COMPONENT}/secrets /etc/${COMPONENT}/jars /etc/schema-registry
+    && chown appuser:root -R /etc/kafka /etc/${COMPONENT} /usr/logs /usr/share/confluent-hub-components \
+    && chmod -R ug+w /etc/kafka /etc/${COMPONENT} /etc/${COMPONENT}/secrets /etc/${COMPONENT}/jars
 
 ENV CONNECT_PLUGIN_PATH=/usr/share/java/,/usr/share/confluent-hub-components/
 
