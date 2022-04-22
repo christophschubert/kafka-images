@@ -17,7 +17,7 @@ ARG DOCKER_UPSTREAM_REGISTRY
 ARG DOCKER_UPSTREAM_TAG=ubi8-latest
 ARG DOCKER_TAG
 
-FROM ${DOCKER_UPSTREAM_REGISTRY}confluentinc/cp-server:${DOCKER_TAG}
+FROM ${DOCKER_UPSTREAM_REGISTRY}confluentinc/cp-base-new:${DOCKER_TAG}
 
 ARG PROJECT_VERSION
 ARG ARTIFACT_ID
@@ -62,6 +62,8 @@ baseurl=${CONFLUENT_PACKAGES_REPO}/ \n\
 gpgcheck=1 \n\
 gpgkey=${CONFLUENT_PACKAGES_REPO}/archive.key \n\
 enabled=1 " > /etc/yum.repos.d/confluent.repo \
+    && echo "===> installing server base package ..." \
+    && yum install -y confluent-server-${CONFLUENT_VERSION} \
     && echo "===> Installing Schema Registry (for Avro jars) ..." \
     && yum install -y confluent-schema-registry-${CONFLUENT_VERSION} \
     && echo "===> Installing Controlcenter for monitoring interceptors ..."\
@@ -75,6 +77,7 @@ enabled=1 " > /etc/yum.repos.d/confluent.repo \
     && rm -rf /tmp/* /etc/yum.repos.d/confluent.repo \
     && rm -rf /etc/confluent-control-center /usr/bin/control-center-* /usr/share/doc/confluent-control-center /usr/share/java/confluent-control-center \
     && rm -rf /etc/schema-registry /usr/bin/schema-registry* /usr/share/doc/kafka-serde-tools /usr/share/doc/schema-registry /usr/share/java/schema-registry \
+    && rm -rf /usr/share/java/confluent-security/schema-registry /usr/share/java/confluent-security/ksql /usr/share/java/confluent-security/kafka-rest /usr/share/java/confluent-metadata-service /usr/share/java/confluent-security/schema-validator \
     && echo "===> Setting up ${COMPONENT} dirs ..." \
     && mkdir -p /etc/${COMPONENT} /etc/${COMPONENT}/secrets /etc/${COMPONENT}/jars /usr/logs /usr/share/confluent-hub-components \
     && chown appuser:root -R /etc/kafka /etc/${COMPONENT} /usr/logs /usr/share/confluent-hub-components \
